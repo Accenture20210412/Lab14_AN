@@ -44,10 +44,9 @@ public class TripController {
         return travelOffice.getTripByName(name);
     }
 
-    @PostMapping("/addTrip")
+    @PostMapping(value = "/addTrip", consumes = "application/json", produces = "application/json")
     public List<Trip> addTrip(@RequestBody Trip trip) {
-        Trip tripAdded = new Trip(trip.getName(), trip.getStartDate(), trip.getEndDate(), trip.getDestination(), trip.getPrice());
-        travelOffice.addTrip(tripAdded);
+        travelOffice.addTrip(trip);
         return travelOffice.getAllTrips();
     }
 
