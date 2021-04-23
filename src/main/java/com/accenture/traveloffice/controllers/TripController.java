@@ -32,32 +32,32 @@ public class TripController {
         return travelOffice.getAllTrips();
     }
 
-    @GetMapping("/{destination}")
-    public List<Trip> getTripByDestination(@PathVariable("destination") String destination) {
+    @GetMapping(value = "/{destination}", params = {"destination"})
+    public List<Trip> getTripByDestination(@RequestParam ("destination") String destination) {
         List<Trip> tripByDestination = travelOffice.getTripByDestination(destination);
         return tripByDestination;
     }
 
     @ResponseBody
-    @GetMapping(value = "/{name}", produces = "application/json")
-    Trip getTripById(@PathVariable("name") String name) {
+    @GetMapping(value = "/{name}", params = {"name"})
+    Trip getTripById(@RequestParam("name") String name) {
         return travelOffice.getTripByName(name);
     }
 
-    @PostMapping(value = "/addTrip", consumes = "application/json", produces = "application/json")
+    @PostMapping
     public List<Trip> addTrip(@RequestBody Trip trip) {
         travelOffice.addTrip(trip);
         return travelOffice.getAllTrips();
     }
 
-    @PutMapping("/editTrip")
+    @PutMapping
     public List<Trip> editTrip(@RequestBody Trip trip) {
         trip.setPrice(trip.getPrice().add(BigDecimal.ONE));
         travelOffice.addTrip(trip);
         return travelOffice.getAllTrips();
     }
 
-    @DeleteMapping("/deleteTrip/{name}")
+    @DeleteMapping("/{name}")
     public List<Trip>  deleteTrip(@PathVariable String name) {
         travelOffice.removeTripByName(name);
         return travelOffice.getAllTrips();
