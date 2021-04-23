@@ -3,6 +3,8 @@ package com.accenture.traveloffice.controllers;
 import com.accenture.traveloffice.models.TravelOffice;
 import com.accenture.traveloffice.models.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,14 +34,14 @@ public class TripController {
         return travelOffice.getAllTrips();
     }
 
-    @GetMapping(value = "/{destination}", params = {"destination"})
+    @GetMapping(params = {"destination"})
     public List<Trip> getTripByDestination(@RequestParam ("destination") String destination) {
         List<Trip> tripByDestination = travelOffice.getTripByDestination(destination);
         return tripByDestination;
     }
 
     @ResponseBody
-    @GetMapping(value = "/{name}", params = {"name"})
+    @GetMapping(params = {"name"})
     Trip getTripById(@RequestParam("name") String name) {
         return travelOffice.getTripByName(name);
     }
@@ -51,14 +53,14 @@ public class TripController {
     }
 
     @PutMapping
-    public List<Trip> editTrip(@RequestBody Trip trip) {
+    public ResponseEntity<List<Trip>> editTrip(@RequestBody Trip trip) {
         trip.setPrice(trip.getPrice().add(BigDecimal.ONE));
         travelOffice.addTrip(trip);
-        return travelOffice.getAllTrips();
+        return new ResponseEntity<>(travelOffice.getAllTrips(), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{name}")
-    public List<Trip>  deleteTrip(@PathVariable String name) {
+    @DeleteMapping
+    public List<Trip> deleteTrip(@RequestParam("name") String name) {
         travelOffice.removeTripByName(name);
         return travelOffice.getAllTrips();
     }
