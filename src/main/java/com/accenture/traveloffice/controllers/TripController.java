@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class TripController {
 
     @ResponseBody
     @GetMapping(params = {"name"})
-    Trip getTripById(@RequestParam("name") String name) {
+    Trip getTripByName(@RequestParam("name") String name) {
         return travelOffice.getTripByName(name);
     }
 
@@ -59,6 +60,7 @@ public class TripController {
         return new ResponseEntity<>(travelOffice.getAllTrips(), HttpStatus.CREATED);
     }
 
+    @Transactional
     @DeleteMapping
     public List<Trip> deleteTrip(@RequestParam("name") String name) {
         travelOffice.removeTripByName(name);

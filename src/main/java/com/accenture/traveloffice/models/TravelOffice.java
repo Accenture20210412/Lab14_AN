@@ -1,6 +1,9 @@
 package com.accenture.traveloffice.models;
 
+import com.accenture.traveloffice.repositories.CustomerData;
 import com.accenture.traveloffice.repositories.CustomerRepository;
+import com.accenture.traveloffice.repositories.TripData;
+import com.accenture.traveloffice.repositories.TripRepo;
 import com.accenture.traveloffice.repositories.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,6 +18,8 @@ public class TravelOffice {
     private final TripRepository trips;
 
     @Autowired
+    private TripRepo tripRepo;
+
     public TravelOffice(CustomerRepository customers, TripRepository trips) {
         this.customers = customers;
         this.trips = trips;
@@ -41,14 +46,17 @@ public class TravelOffice {
     }
 
     public boolean addTrip(Trip trip) {
+        tripRepo.save(trip);
         return trips.add(trip);
     }
 
     public boolean removeTrip(Trip trip) {
+        tripRepo.delete(trip);
         return trips.remove(trip);
     }
 
     public void removeTripByName(String name) {
+        tripRepo.deleteByName(name);
         trips.removeByName(name);
     }
 
@@ -81,7 +89,7 @@ public class TravelOffice {
     }
 
     public List<Trip> getAllTrips() {
-        return trips.getAll();
+        return tripRepo.findAll();
     }
 
     public String getTripsInfo() {
