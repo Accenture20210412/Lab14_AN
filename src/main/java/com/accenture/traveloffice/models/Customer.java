@@ -1,9 +1,12 @@
 package com.accenture.traveloffice.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -21,7 +24,8 @@ public class Customer {
     private String lastName;
     private String address;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name ="customer_id")
     private Trip trip;
 
     public Customer(String firstName, String lastName, String address, Trip trip) {

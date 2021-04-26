@@ -1,15 +1,25 @@
 package com.accenture.traveloffice.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +38,9 @@ public class Trip {
     private Date endDate;
     private String destination;
     private BigDecimal price;
+
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    private List<Customer> customers = new ArrayList<>();
 
     public Trip(String name, Date startDate, Date endDate, String destination, BigDecimal price) {
         this.name = name;
